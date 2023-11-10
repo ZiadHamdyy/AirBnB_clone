@@ -6,32 +6,28 @@ This module contains the HBNBCommand class that implements.
 
 import cmd
 import shlex
+import json
 from models.base_model import BaseModel
 from models import storage
+from models.engine.file_storage import FileStorage
 from models.user import User
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
 
+classes = {
+        "BaseModel": BaseModel(),
+        "User": User()
+    }
 
 class HBNBCommand(cmd.Cmd):
     """
     HBNBCommand class that implements the command interpreter.
-   
     """
+
     prompt = "(hbnb) "
     classes = {
         "BaseModel": BaseModel(),
-        "User": User(),
-        "State": State(),
-        "City": City(),
-        "Amenity": Amenity(),
-        "Place": Place(),
-        "Review": Review()
-    }
+        "User": User()
 
+    }
     def do_quit(self, arg):
         """
         commend exit the program
@@ -51,10 +47,17 @@ class HBNBCommand(cmd.Cmd):
         """
         print("Quit command to exit the program")
 
+    def help_EOF(self):
+        """
+        Print help message for EOF command
+        """
+        print("Quit command to exit the program")
+
     def emptyline(self):
         """
         Empty line + ENTER shouldn't execute anything
         """
+        print()
         pass
 
     def default(self, arg):
@@ -63,8 +66,6 @@ class HBNBCommand(cmd.Cmd):
              "all": self.do_all,
              "show": self.do_show,
              "destroy": self.do_destroy,
-             "count": self.do_count,
-             "update": self.do_update
     }
 
     def do_create(self, arg):
@@ -147,5 +148,50 @@ class HBNBCommand(cmd.Cmd):
                 strs = [str(obj) for obj in class_objs]
                 print(strs)
 
-    if __name__ == '__main__':
+    def do_update(self, arg):
+        """Updates an instance based on the class name and id"""
+        args = arg.split()
+        if not args:
+            print('** class name missing **')
+            return
+
+        class_name = args[0]
+
+        if class_name not in self.classes:
+            print('** class doesn\'t exist **')
+            return
+
+        if len(args) < 2:
+            print('** instance id missing **')
+            return
+
+        instance_id = args[1]
+        key = "{}.{}".format(class_name, instance_id)
+        obj_dict = storage.all()
+
+        if key not in obj_dict:
+            print('** no instance found **')
+            return
+
+        if len(args) < 3:
+            print('** attribute name missing **')
+            return
+
+        attribute_name = args[2]
+
+        if len(args) < 4:
+            print('** value missing **')
+            return
+
+        attribute_value = args[3].strip('"')
+
+        instance = obj_dict[key]
+        try:
+            attribute_value = type(getattr(instance, attribute_name))(attribute_value)
+        except (AttributeError, ValueError):
+            pass
+
+        setattr(instance, attribute_name, attribute_value)
+        instance.save()
+if __name__ == '__main__':
     HBNBCommand().cmdloop()
