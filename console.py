@@ -57,9 +57,6 @@ class HBNBCommand(cmd.Cmd):
         """
         pass
 
-if __name__ == '__main__':
-    HBNBCommand().cmdloop()
-
     def default(self, arg):
          """Handle any command that is not defined"""
          methods = {
@@ -105,3 +102,50 @@ if __name__ == '__main__':
                 print(all_objs[key])
             else:
                 print("** no instance found **")
+    def do_destroy(self, arg):
+        """
+        Deletes an instance based on the class name.
+        """
+        args = shlex.split(arg)
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] not in self.classes:
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        else:
+            all_objs = storage.all()
+            key = "{}.{}".format(args[0], args[1])
+            if key in all_objs:
+                del all_objs[key]
+                storage.save()
+            else:
+                print("** no instance found **")
+
+    def do_all(self, arg):
+        """
+        Prints all string representation.
+        """
+        args = shlex.split(arg)
+        all_objs = storage.all()
+        if len(args) == 0:
+            print([str(obj) for obj in all_objs.items()])
+        elif args[0] not in self.classes:
+            print("** class doesn't exist **")
+        else:
+            if arg[0].endswith('.all'):
+                class_name = arg[0].split(".")[0]
+                class_objs = [
+                    value for key, value in all_objs.items()
+                    if key.startswith(class_name)]
+                strs = [str(obj) for obj in class_objs]
+                print(strs)
+            else:
+                class_objs = [
+                    value for key, value in all_objs.items()
+                    if key.startswith(arg[0])]
+                strs = [str(obj) for obj in class_objs]
+                print(strs)
+
+    if __name__ == '__main__':
+    HBNBCommand().cmdloop()
