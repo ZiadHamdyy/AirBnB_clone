@@ -69,7 +69,8 @@ if __name__ == '__main__':
              "count": self.do_count,
              "update": self.do_update
     }
-         def do_create(self, arg):
+
+    def do_create(self, arg):
         """
         Creates a new instance of any available model,
         and saves it...
