@@ -3,7 +3,6 @@
 This module contains the HBNBCommand class that implements.
 """
 
-
 import cmd
 import shlex
 import json
@@ -12,31 +11,6 @@ from models.base_model import BaseModel
 from models import storage
 from models.engine.file_storage import FileStorage
 from models.user import User
-<<<<<<< HEAD
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
-=======
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
-
-
-classes = {
-        "BaseModel": BaseModel(),
-        "User": User(),
-        "Place": Place(),
-        "State": State(),
-        "City": City(),
-        "Amenity": Amenity(),
-        "Review": Review()
-    }
->>>>>>> f03d2ff600668bf0957e70f174b06e2734645cd4
-
 
 class HBNBCommand(cmd.Cmd):
     """
@@ -47,14 +21,11 @@ class HBNBCommand(cmd.Cmd):
     classes = {
         "BaseModel": BaseModel(),
         "User": User()
-<<<<<<< HEAD
         "State": State(),
         "City": City(),
         "Amenity": Amenity(),
         "Place": Place(),
         "Review": Review()
-=======
->>>>>>> f03d2ff600668bf0957e70f174b06e2734645cd4
     }
 
     def do_quit(self, arg):
@@ -98,27 +69,9 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("*** Unknown syntax: {}".format(arg))
 
-        methods = {
-             "all": self.do_all,
-             "show": self.do_show,
-             "destroy": self.do_destroy,
-<<<<<<< HEAD
-             "update": self.do_update,
-             "count": self.do_count
-    }
-    args = arg.split('.')
-        if len(args) == 2 and args[1] == 'all' and args[0] in self.classes:
-            self.do_all(args[0])
-        else:
-            print("*** Unknown syntax: {}".format(arg))
-=======
-        }
->>>>>>> f03d2ff600668bf0957e70f174b06e2734645cd4
-
     def do_create(self, arg):
         """
-        Creates a new instance of any available model,
-        and saves it...
+        Creates a new instance of any available model.
         """
 
         args = shlex.split(arg)
