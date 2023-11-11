@@ -71,12 +71,28 @@ class HBNBCommand(cmd.Cmd):
         parts = arg.split('.')
 
         if len(parts) == 2:
-            if parts[1].startswith('show(') and parts[1].endswith(')'):
+            if parts[1].startswith('destroy(') and parts[1].endswith(')'):
                 class_name = parts[0]
-                obj_id = parts[1][6:-2]
+                obj_id = parts[1][9:-2]
+
                 if class_name in self.classes:
                     key = "{}.{}".format(class_name, obj_id)
                     all_objs = storage.all()
+
+                    if key in all_objs:
+                        del all_objs[key]
+                        storage.save()
+                    else:
+                        print("** no instance found **")
+
+            if parts[1].startswith('show(') and parts[1].endswith(')'):
+                class_name = parts[0]
+                obj_id = parts[1][6:-2]
+
+                if class_name in self.classes:
+                    key = "{}.{}".format(class_name, obj_id)
+                    all_objs = storage.all()
+
                     if key in all_objs:
                         print(all_objs[key])
                     else:
