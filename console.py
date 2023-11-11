@@ -209,8 +209,7 @@ class HBNBCommand(cmd.Cmd):
 
         instance = obj_dict[key]
         try:
-            attribute_value = type(getattr(instance,
-                                           attribute_name))(attribute_value)
+            attribute_value = type(getattr(instance, attribute_name))(attribute_value)
         except (AttributeError, ValueError):
             pass
 
