@@ -7,14 +7,25 @@ This module contains the HBNBCommand class that implements.
 import cmd
 import shlex
 import json
+from sys import argv
 from models.base_model import BaseModel
 from models import storage
 from models.engine.file_storage import FileStorage
 from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 classes = {
         "BaseModel": BaseModel(),
-        "User": User()
+        "User": User(),
+        "Place": Place(),
+        "State": State(),
+        "City": City(),
+        "Amenity": Amenity(),
+        "Review": Review()
     }
 
 class HBNBCommand(cmd.Cmd):
@@ -61,8 +72,15 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def default(self, arg):
-         """Handle any command that is not defined"""
-         methods = {
+        """Handle any command that is not defined"""
+        
+        parts = arg.split('.')
+        if len(parts) == 2 and parts[1] == 'all' and parts[0] in self.classes:
+            self.do_all(parts[0])
+        else:
+            print("*** Unknown syntax: {}".format(arg))
+
+        methods = {
              "all": self.do_all,
              "show": self.do_show,
              "destroy": self.do_destroy,
