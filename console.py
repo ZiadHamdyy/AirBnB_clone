@@ -69,8 +69,19 @@ class HBNBCommand(cmd.Cmd):
         """Handle any command that is not defined"""
 
         parts = arg.split('.')
+
         if len(parts) == 2:
-            if parts[1] == 'all()':
+            if parts[1].startswith('show(') and parts[1].endswith(')'):
+                class_name = parts[0]
+                obj_id = parts[1][6:-2]
+                if class_name in self.classes:
+                    key = "{}.{}".format(class_name, obj_id)
+                    all_objs = storage.all()
+                    if key in all_objs:
+                        print(all_objs[key])
+                    else:
+                        print("** no instance found **")
+            elif parts[1] == 'all()':
                 class_name = parts[0]
                 if class_name in self.classes:
                     print([str(obj) for obj in storage.all().values() if obj.__class__.__name__ == class_name])
