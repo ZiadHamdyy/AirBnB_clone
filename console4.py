@@ -69,19 +69,25 @@ class HBNBCommand(cmd.Cmd):
         """Handle any command that is not defined"""
 
         parts = arg.split('.')
-        if len(parts) == 2:
-            if parts[1] == 'all()':
-                class_name = parts[0]
-                if class_name in self.classes:
-                    print([str(obj) for obj in storage.all().values() if obj.__class__.__name__ == class_name])
-                else:
-                    print("** class doesn't exist **")
-            elif parts[1] == 'count()':
-                class_name = parts[0]
-                if class_name in self.classes:
-                    print(sum(1 for obj in storage.all().values() if obj.__class__.__name__ == class_name))
-                else:
-                    print("** class doesn't exist **")
+        if len(parts) == 2 and parts[1] == 'all()':
+            class_name = parts[0]
+            if class_name in self.classes:
+                print([str(obj) for obj in storage.all().values() if obj.__class__.__name__ == class_name])
+                return
+            else:
+                print("** class doesn't exist **")
+        else:
+            print("*** Unknown syntax: {}".format(arg))
+        """count"""
+
+        if len(parts) == 2 and parts[1] == 'count()':
+            class_name = parts[0]
+            if class_name in self.classes:
+                count = sum(1 for obj in storage.all().values() if obj.__class__.__name__ == class_name)
+                print(count)
+                return
+            else:
+                print("** class doesn't exist **")
         else:
             print("*** Unknown syntax: {}".format(arg))
 
