@@ -3,9 +3,9 @@
 
 from models.base_model import BaseModel
 
+
 class Place(BaseModel):
     """Place class"""
-
 
     city_id: str = ""
     user_id: str = ""

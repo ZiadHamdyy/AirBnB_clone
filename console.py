@@ -72,7 +72,6 @@ class HBNBCommand(cmd.Cmd):
         parts = arg.split('.')
 
         if len(parts) == 2:
-            
             if parts[1].startswith('destroy(') and parts[1].endswith(')'):
                 class_name = parts[0]
                 obj_id = parts[1][9:-2]
@@ -103,13 +102,15 @@ class HBNBCommand(cmd.Cmd):
             elif parts[1] == 'all()':
                 class_name = parts[0]
                 if class_name in self.classes:
-                    print([str(obj) for obj in storage.all().values() if obj.__class__.__name__ == class_name])
+                    print([str(obj) for obj in storage.all().values()
+                           if obj.__class__.__name__ == class_name])
                 else:
                     print("** class doesn't exist **")
             elif parts[1] == 'count()':
                 class_name = parts[0]
                 if class_name in self.classes:
-                    print(sum(1 for obj in storage.all().values() if obj.__class__.__name__ == class_name))
+                    print(sum(1 for obj in storage.all().values()
+                              if obj.__class__.__name__ == class_name))
                 else:
                     print("** class doesn't exist **")
 
@@ -117,7 +118,7 @@ class HBNBCommand(cmd.Cmd):
                 class_name = parts[0]
                 update_args = parts[1][7:-1].split(', ')
                 obj_id = update_args[0].strip('\"\'')
-            
+
                 if class_name in self.classes:
                     key = "{}.{}".format(class_name, obj_id)
                     all_objs = storage.all()
@@ -131,7 +132,8 @@ class HBNBCommand(cmd.Cmd):
                             setattr(obj, attr_name, attr_value)
                             obj.updated_at = datetime.datetime.now()
                             storage.save()
-                        elif len(update_args) == 2 and isinstance(eval(update_args[1]), dict):
+                        elif len(update_args) == 2 and isinstance(
+                                   eval(update_args[1]), dict):
                             update_dict = eval(update_args[1])
                             for key, value in update_dict.items():
                                 setattr(obj, key, value)

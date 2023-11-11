@@ -12,6 +12,7 @@ class BaseModel:
     """BaseModel class"""
 
     def __init__(self, *args, **kwargs):
+        """___init"""
         if (kwargs):
             for key, value in kwargs.items():
                 if key != '__class__':
