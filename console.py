@@ -3,6 +3,7 @@
 This module contains the HBNBCommand class that implements.
 """
 
+import datetime
 import cmd
 import shlex
 import json
@@ -71,12 +72,14 @@ class HBNBCommand(cmd.Cmd):
         parts = arg.split('.')
 
         if len(parts) == 2:
+            
             if parts[1].startswith('destroy(') and parts[1].endswith(')'):
                 class_name = parts[0]
                 obj_id = parts[1][9:-2]
 
                 if class_name in self.classes:
                     key = "{}.{}".format(class_name, obj_id)
+                    print("Debug: Looking for key:", key)
                     all_objs = storage.all()
 
                     if key in all_objs:
@@ -85,7 +88,7 @@ class HBNBCommand(cmd.Cmd):
                     else:
                         print("** no instance found **")
 
-            if parts[1].startswith('show(') and parts[1].endswith(')'):
+            elif parts[1].startswith('show(') and parts[1].endswith(')'):
                 class_name = parts[0]
                 obj_id = parts[1][6:-2]
 
@@ -109,6 +112,35 @@ class HBNBCommand(cmd.Cmd):
                     print(sum(1 for obj in storage.all().values() if obj.__class__.__name__ == class_name))
                 else:
                     print("** class doesn't exist **")
+
+            elif parts[1].startswith('update(') and parts[1].endswith(')'):
+                class_name = parts[0]
+                update_args = parts[1][7:-1].split(', ')
+                obj_id = update_args[0].strip('\"\'')
+            
+                if class_name in self.classes:
+                    key = "{}.{}".format(class_name, obj_id)
+                    all_objs = storage.all()
+
+                    if key in all_objs:
+                        obj = all_objs[key]
+
+                        if len(update_args) == 3:
+                            attr_name = update_args[1]
+                            attr_value = update_args[2]
+                            setattr(obj, attr_name, attr_value)
+                            obj.updated_at = datetime.datetime.now()
+                            storage.save()
+                        elif len(update_args) == 2 and isinstance(eval(update_args[1]), dict):
+                            update_dict = eval(update_args[1])
+                            for key, value in update_dict.items():
+                                setattr(obj, key, value)
+                            obj.updated_at = datetime.datetime.now()
+                            storage.save()
+                        else:
+                            print("** invalid command syntax **")
+                    else:
+                        print("** no instance found **")
         else:
             print("*** Unknown syntax: {}".format(arg))
 
