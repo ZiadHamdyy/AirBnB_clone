@@ -16,15 +16,6 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
-classes = {
-        "BaseModel": BaseModel(),
-        "User": User(),
-        "Place": Place(),
-        "State": State(),
-        "City": City(),
-        "Amenity": Amenity(),
-        "Review": Review()
-    }
 
 class HBNBCommand(cmd.Cmd):
     """
@@ -78,16 +69,17 @@ class HBNBCommand(cmd.Cmd):
         """Handle any command that is not defined"""
 
         parts = arg.split('.')
-        if len(parts) == 2 and parts[1] == 'all' and parts[0] in self.classes:
-            self.do_all(parts[0])
+        if len(parts) == 2 and parts[1] == 'all()':
+            class_name = parts[0]
+            if class_name in self.classes:
+                print([str(obj) for obj in storage.all().values() if obj.__class__.__name__ == class_name])
+                return True
+            else:
+                print("** class doesn't exist **")
+                return True
         else:
             print("*** Unknown syntax: {}".format(arg))
-
-        methods = {
-                "all": self.do_all,
-                "show": self.do_show,
-                "destory": self.do_destroy,
-                }
+            return False
 
     def do_create(self, arg):
         """
@@ -209,7 +201,8 @@ class HBNBCommand(cmd.Cmd):
 
         instance = obj_dict[key]
         try:
-            attribute_value = type(getattr(instance, attribute_name))(attribute_value)
+            attribute_value = type(getattr(instance,
+                                           attribute_name))(attribute_value)
         except (AttributeError, ValueError):
             pass
 

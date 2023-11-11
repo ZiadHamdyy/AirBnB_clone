@@ -19,7 +19,6 @@ class FileStorage:
 
     def all(self):
         """all"""
-
         return self.__objects
 
     def new(self, obj):
