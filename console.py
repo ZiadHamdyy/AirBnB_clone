@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """
 This module contains the HBNBCommand class that implements.
-
 """
 
 import cmd
@@ -11,11 +10,11 @@ from models.base_model import BaseModel
 from models import storage
 from models.engine.file_storage import FileStorage
 from models.user import User
-
-classes = {
-        "BaseModel": BaseModel(),
-        "User": User()
-    }
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 class HBNBCommand(cmd.Cmd):
     """
@@ -26,8 +25,13 @@ class HBNBCommand(cmd.Cmd):
     classes = {
         "BaseModel": BaseModel(),
         "User": User()
-
+        "State": State(),
+        "City": City(),
+        "Amenity": Amenity(),
+        "Place": Place(),
+        "Review": Review()
     }
+
     def do_quit(self, arg):
         """
         commend exit the program
@@ -66,7 +70,14 @@ class HBNBCommand(cmd.Cmd):
              "all": self.do_all,
              "show": self.do_show,
              "destroy": self.do_destroy,
+             "update": self.do_update,
+             "count": self.do_count
     }
+    args = arg.split('.')
+        if len(args) == 2 and args[1] == 'all' and args[0] in self.classes:
+            self.do_all(args[0])
+        else:
+            print("*** Unknown syntax: {}".format(arg))
 
     def do_create(self, arg):
         """
@@ -86,8 +97,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, arg):
         """
-        Prints the string representation
-        Usage: "id"
+        Prints the string representation.
         """
         args = shlex.split(arg)
         if len(args) == 0:
@@ -158,7 +168,7 @@ class HBNBCommand(cmd.Cmd):
         class_name = args[0]
 
         if class_name not in self.classes:
-            print('** class doesn\'t exist **')
+            print('** class doesnt exist **')
             return
 
         if len(args) < 2:
