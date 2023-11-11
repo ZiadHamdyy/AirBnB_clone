@@ -43,11 +43,24 @@ class FileStorage:
         try:
             with open(self.__file_path, 'r', encoding='utf-8') as file:
                 loaded = json.load(file)
-            
+
+            models = {
+            'User': User,
+            'BaseModel': BaseModel,
+            'State': State,
+            'City': City,
+            'Amenity': Amenity,
+            'Place': Place,
+            'Review': Review
+            }
+
             for key, obj_dict in loaded.items():
-                class_name, obj_id = key.split('.')
-                class_instance = globals()[class_name]
-                obj = class_instance(**obj_dict)
-                self.__objects[key] = obj
+                class_name = obj_dict["__class__"]
+                class_instance = models.get(class_name)
+
+                if class_instance:
+                    obj = class_instance(**obj_dict)
+                    self.__objects[key] = obj
+
         except FileNotFoundError:
             pass
