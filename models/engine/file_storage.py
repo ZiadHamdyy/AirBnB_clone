@@ -4,20 +4,17 @@
 import json
 from models.base_model import BaseModel
 from models.user import User
-<<<<<<< HEAD
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-=======
 from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
->>>>>>> f03d2ff600668bf0957e70f174b06e2734645cd4
 
 class FileStorage:
     """FileStorage class"""

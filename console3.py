@@ -9,22 +9,8 @@ import json
 from sys import argv
 from models.base_model import BaseModel
 from models import storage
+from models.engine.file_storage import FileStorage
 from models.user import User
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
-
-classes = {
-        "BaseModel": BaseModel(),
-        "User": User(),
-        "Place": Place(),
-        "State": State(),
-        "City": City(),
-        "Amenity": Amenity(),
-        "Review": Review()
-    }
 
 class HBNBCommand(cmd.Cmd):
     """
@@ -34,8 +20,13 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     classes = {
         "BaseModel": BaseModel(),
-        "User": User()
-        }
+        "User": User(),
+        "State": State(),
+        "City": City(),
+        "Amenity": Amenity(),
+        "Place": Place(),
+        "Review": Review()
+    }
 
     def do_quit(self, arg):
         """
@@ -64,7 +55,7 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         """
-        Empty line
+        Empty line + ENTER shouldn't execute anything
         """
         print()
         pass
@@ -78,18 +69,13 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("*** Unknown syntax: {}".format(arg))
 
-        methods = {
-                "all": self.do_all,
-                "show": self.do_show,
-                "destory": self.do_destroy,
-                }
-
     def do_create(self, arg):
         """
         Creates a new instance of any available model.
         """
 
         args = shlex.split(arg)
+
         if len(args) == 0:
             print("** class name missing **")
         elif args[0] not in self.classes:
