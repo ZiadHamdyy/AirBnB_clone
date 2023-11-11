@@ -16,6 +16,16 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
+classes = {
+        "BaseModel": BaseModel(),
+        "User": User(),
+        "Place": Place(),
+        "State": State(),
+        "City": City(),
+        "Amenity": Amenity(),
+        "Review": Review()
+    }
+
 class HBNBCommand(cmd.Cmd):
     """
     HBNBCommand class that implements the command interpreter.
@@ -25,12 +35,7 @@ class HBNBCommand(cmd.Cmd):
     classes = {
         "BaseModel": BaseModel(),
         "User": User()
-        "State": State(),
-        "City": City(),
-        "Amenity": Amenity(),
-        "Place": Place(),
-        "Review": Review()
-    }
+        }
 
     def do_quit(self, arg):
         """
@@ -59,7 +64,7 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         """
-        Empty line + ENTER shouldn't execute anything
+        Empty line
         """
         print()
         pass
@@ -67,11 +72,17 @@ class HBNBCommand(cmd.Cmd):
     def default(self, arg):
         """Handle any command that is not defined"""
 
-        args = arg.split('.')
-        if len(args) == 2 and args[1] == 'all' and args[0] in self.classes:
-            self.do_all(args[0])
+        parts = arg.split('.')
+        if len(parts) == 2 and parts[1] == 'all' and parts[0] in self.classes:
+            self.do_all(parts[0])
         else:
             print("*** Unknown syntax: {}".format(arg))
+
+        methods = {
+                "all": self.do_all,
+                "show": self.do_show,
+                "destory": self.do_destroy,
+                }
 
     def do_create(self, arg):
         """
