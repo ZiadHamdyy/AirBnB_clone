@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""FileStorage file"""
 
 import json
 from models.base_model import BaseModel
@@ -9,29 +10,27 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 class FileStorage:
     """FileStorage class"""
 
     __file_path = "file.json"
-    __objects = {
-        "BaseModel": BaseModel,
-        "User": User,
-        "Place": Place,
-        "State": State,
-        "City": City,
-        "Amenity": Amenity,
-        "Review": Review
-    }
-
+    __objects = {}
 
     def all(self):
+        """all"""
+
         return self.__objects
 
-    def new( self, obj):
+    def new(self, obj):
+        """new"""
+
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
         self.__objects[key] = obj
 
     def save(self):
+        """save"""
+
         serialized = {}
         for key, obj in self.__objects.items():
             serialized[key] = obj.to_dict()
@@ -40,18 +39,20 @@ class FileStorage:
             json.dump(serialized, file)
 
     def reload(self):
+        """reload"""
+
         try:
             with open(self.__file_path, 'r', encoding='utf-8') as file:
                 loaded = json.load(file)
 
             models = {
-            'User': User,
-            'BaseModel': BaseModel,
-            'State': State,
-            'City': City,
-            'Amenity': Amenity,
-            'Place': Place,
-            'Review': Review
+                'User': User,
+                'BaseModel': BaseModel,
+                'State': State,
+                'City': City,
+                'Amenity': Amenity,
+                'Place': Place,
+                'Review': Review
             }
 
             for key, obj_dict in loaded.items():

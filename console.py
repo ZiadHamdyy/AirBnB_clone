@@ -4,6 +4,7 @@ This module contains the HBNBCommand class that implements.
 
 """
 
+
 import cmd
 import shlex
 import json
@@ -18,6 +19,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 classes = {
         "BaseModel": BaseModel(),
         "User": User(),
@@ -28,6 +30,7 @@ classes = {
         "Review": Review()
     }
 
+
 class HBNBCommand(cmd.Cmd):
     """
     HBNBCommand class that implements the command interpreter.
@@ -37,8 +40,8 @@ class HBNBCommand(cmd.Cmd):
     classes = {
         "BaseModel": BaseModel(),
         "User": User()
-
     }
+
     def do_quit(self, arg):
         """
         commend exit the program
@@ -73,7 +76,7 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, arg):
         """Handle any command that is not defined"""
-        
+
         parts = arg.split('.')
         if len(parts) == 2 and parts[1] == 'all' and parts[0] in self.classes:
             self.do_all(parts[0])
@@ -84,15 +87,16 @@ class HBNBCommand(cmd.Cmd):
              "all": self.do_all,
              "show": self.do_show,
              "destroy": self.do_destroy,
-    }
+        }
 
     def do_create(self, arg):
         """
         Creates a new instance of any available model,
         and saves it...
-
         """
+
         args = shlex.split(arg)
+
         if len(args) == 0:
             print("** class name missing **")
         elif args[0] not in self.classes:
@@ -121,10 +125,12 @@ class HBNBCommand(cmd.Cmd):
                 print(all_objs[key])
             else:
                 print("** no instance found **")
+
     def do_destroy(self, arg):
         """
         Deletes an instance based on the class name.
         """
+
         args = shlex.split(arg)
         if len(args) == 0:
             print("** class name missing **")
@@ -168,6 +174,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, arg):
         """Updates an instance based on the class name and id"""
+
         args = arg.split()
         if not args:
             print('** class name missing **')
@@ -205,11 +212,14 @@ class HBNBCommand(cmd.Cmd):
 
         instance = obj_dict[key]
         try:
-            attribute_value = type(getattr(instance, attribute_name))(attribute_value)
+            attribute_value = type(getattr(instance,
+                                           attribute_name))(attribute_value)
         except (AttributeError, ValueError):
             pass
 
         setattr(instance, attribute_name, attribute_value)
         instance.save()
+
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
