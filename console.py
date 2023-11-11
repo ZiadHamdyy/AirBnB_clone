@@ -9,8 +9,12 @@ import json
 from sys import argv
 from models.base_model import BaseModel
 from models import storage
-from models.engine.file_storage import FileStorage
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 class HBNBCommand(cmd.Cmd):
     """
@@ -63,9 +67,9 @@ class HBNBCommand(cmd.Cmd):
     def default(self, arg):
         """Handle any command that is not defined"""
 
-        parts = arg.split('.')
-        if len(parts) == 2 and parts[1] == 'all' and parts[0] in self.classes:
-            self.do_all(parts[0])
+        args = arg.split('.')
+        if len(args) == 2 and args[1] == 'all' and args[0] in self.classes:
+            self.do_all(args[0])
         else:
             print("*** Unknown syntax: {}".format(arg))
 
@@ -75,7 +79,6 @@ class HBNBCommand(cmd.Cmd):
         """
 
         args = shlex.split(arg)
-
         if len(args) == 0:
             print("** class name missing **")
         elif args[0] not in self.classes:
