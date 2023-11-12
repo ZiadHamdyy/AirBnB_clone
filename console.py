@@ -159,22 +159,6 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             class_obj = self.classes[args[0]]
-            if len(args) > 1:
-                obj_id = args[1]
-                key = "{}.{}".format(args[0], obj_id)
-                all_objs = storage.all()
-
-                if key in all_objs:
-                    print("Instance with ID '{}' already exists.".format(obj_id))
-                    obj_id = str(uuid.uuid4())
-                    print("Generating a new ID: {}".format(obj_id))
-                    key = "{}.{}".format(args[0], obj_id)
-
-            else:
-                obj_id = str(uuid.uuid4())
-                key = "{}.{}".format(args[0], obj_id)
-
-            class_obj.id = obj_id
             class_obj.save()
             print(class_obj.id)
 
