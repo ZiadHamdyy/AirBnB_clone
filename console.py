@@ -26,13 +26,13 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
     classes = {
-        "BaseModel": BaseModel(),
-        "User": User(),
-        "Place": Place(),
-        "State": State(),
-        "City": City(),
-        "Amenity": Amenity(),
-        "Review": Review()
+        "BaseModel": BaseModel,
+        "User": User,
+        "Place": Place,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Review": Review
         }
 
     def do_quit(self, arg):
@@ -158,7 +158,7 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] not in self.classes:
             print("** class doesn't exist **")
         else:
-            class_obj = self.classes[args[0]]
+            class_obj = self.classes[args[0]]()
             class_obj.save()
             print(class_obj.id)
 
