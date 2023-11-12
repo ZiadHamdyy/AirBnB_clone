@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-This module contains the HBNBCommand class that implements.
+This module contains the HBNBCommand..
 """
 
 import datetime
