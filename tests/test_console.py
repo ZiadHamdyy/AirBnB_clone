@@ -5,6 +5,15 @@ This module contains the HBNBCommand class that implements.
 
 from console import HBNBCommand
 from models.engine.file_storage import FileStorage
+from models.base_model import BaseModel
+from models import storage
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+
 import unittest
 import datetime
 from unittest.mock import patch
