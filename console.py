@@ -6,10 +6,10 @@ This module contains the HBNBCommand class that implements.
 import datetime
 import cmd
 import shlex
+from models import storage
 import json
 from sys import argv
 from models.base_model import BaseModel
-from models import Storage
 from models.user import User
 from models.state import State
 from models.city import City
